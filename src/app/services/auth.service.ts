@@ -1,0 +1,21 @@
+import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { environment } from '@environments/environment';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class AuthService {
+
+
+  private API_URL = environment.API_URL;
+  constructor( private httpCliente:HttpClient ) { }
+
+  login(email: string, password: string) {
+    // Simulate a login check
+    return this.httpCliente.post(`${this.API_URL}/api/v1/auth/login`,{
+      email,
+      password
+    })
+  }
+}
