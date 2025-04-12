@@ -18,4 +18,18 @@ export class AuthService {
       password
     })
   }
+
+  regiter(email: string, password: string,name:string){
+    return this.httpCliente.post(`${this.API_URL}/api/v1/auth/register`,{
+      email,
+      password,
+      name
+    })
+  }
+
+  isAvailable(email: string){
+    return this.httpCliente.post<{isAvailable:boolean}>(`${this.API_URL}/api/v1/auth/is-available`,{
+      email,
+    })
+  }
 }
