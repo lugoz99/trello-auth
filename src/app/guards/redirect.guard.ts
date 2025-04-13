@@ -9,7 +9,8 @@ import { Observable } from 'rxjs';
 export class RedirectGuard implements CanActivate {
   constructor( private tokenService:TokenService, private router:Router){}
   canActivate():boolean {
-    const token = this.tokenService.getToken();
+      //const token = this.tokenService.isValidToken();
+      const token = this.tokenService.isValidRefreshtoken();
     if(token){
       this.router.navigate(['/app'])
     }

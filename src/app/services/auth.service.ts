@@ -28,10 +28,22 @@ export class AuthService {
     }).pipe(
       tap( resp => {
           this.tokenService.saveToken( resp.access_token )
+          this.tokenService.saveRefreshToken( resp.refresh_token)
       } )
     )
   }
 
+
+  refreshToken(refreshToken:string){
+    return this.httpCliente.post<ResponseLogin>(`${this.API_URL}/api/v1/auth/refresh-token`,{
+      refreshToken
+    }).pipe(
+      tap( resp => {
+          this.tokenService.saveToken( resp.access_token )
+          this.tokenService.saveRefreshToken( resp.refresh_token)
+      } )
+    )
+  }
   regiter(email: string, password: string,name:string){
     return this.httpCliente.post(`${this.API_URL}/api/v1/auth/register`,{
       email,
