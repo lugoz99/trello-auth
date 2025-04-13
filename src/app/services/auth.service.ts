@@ -32,4 +32,19 @@ export class AuthService {
       email,
     })
   }
+
+  recovery(email:string){
+    return this.httpCliente.post<{isAvailable:boolean}>(`${this.API_URL}/api/v1/auth/recovery`,{
+      email,
+    })
+  }
+
+  changePassword(newPassword:string,token:string){
+    return this.httpCliente.post<{isAvailable:boolean}>(`${this.API_URL}/api/v1/auth/change-password`,{
+      token,
+      newPassword
+    })
+  }
+
+
 }
