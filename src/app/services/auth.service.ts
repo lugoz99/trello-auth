@@ -4,6 +4,8 @@ import { environment } from '@environments/environment';
 import { TokenService } from './token.service';
 import { tap } from 'rxjs/operators';
 import { ResponseLogin } from '@models/auth-model';
+import { User } from '@models/user.model';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -12,6 +14,9 @@ export class AuthService {
 
 
   private API_URL = environment.API_URL;
+  // guardar usuario logueado  y manejar un estado general
+  user$ = new BehaviorSubject<User | null>(null);
+
   constructor( private httpCliente:HttpClient, private tokenService:TokenService) { }
 
   login(email: string, password: string) {
@@ -58,5 +63,22 @@ export class AuthService {
     this.tokenService.removeToken();
   }
 
+  getProfile(){
+    const token = this.tokenService.getToken();
+     return this.httpCliente.get<User>(`${this.API_URL}/api/v1/auth/profile`, {
+          headers:{
+            Authorization:`Bearer ${token} `
+          }
+        }
+        ).pipe(
+          tap( resp => {
+            this.user$.next(resp)
+        } )
+        )
+  }
+
+  getDataUser(){
+    return this.user$.getValue();
+  }
 
 }
